@@ -6,7 +6,6 @@
     <title>Title</title>
 </head>
 <body>
-<form:form method="post" action="deleteNews.html">
     <p>
         <form:label path="title">News Title</form:label>
         ${article.title}
@@ -24,10 +23,5 @@
         <form:label path="content">Content</form:label>
         ${article.content}
     </p>
-    <p>
-        <input type="submit" value="delete"/>
-    </p>
-</form:form>
-
 </body>
 </html>

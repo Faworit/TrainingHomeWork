@@ -32,7 +32,7 @@
         <textarea maxlength="2048" name="content" required>${article.content}</textarea>
     </p>
     <p>
-        <input type="submit" value="Add News"/>
+        <input type="submit" value="Edit News"/>
     </p>
 </form:form>
 
