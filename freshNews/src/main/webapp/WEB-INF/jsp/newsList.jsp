@@ -11,36 +11,32 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="/css/body.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <form:form action="deleteNews" method="post" modelAttribute="articleDTO">
-<table>
+
     <c:forEach var="article" items="${listArticle}">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 70%"><c:out value="${article.title}"/></td>
+                <td colspan="3", rowspan="2" style="width: 30%"><c:out value="${article.start}"/></td>
+            </tr>
+            <tr>
+                <td rowspan="2" style="width: 70%"><c:out value="${article.brief}"/></td>
+            </tr>
+            <tr>
+                <td style="width: 10%"><a href="/showArticle/${article.articleId}/show">view</a></td>
+                <td style="width: 10%"><a href="/showArticle/${article.articleId}/edit">edit</a></td>
+                <td style="width: 10%">
+                    <form:checkbox path="idDel" value="${article.articleId}"></form:checkbox>
+                </td>
+            </tr>
+        </table>
 
-        <tr>
-            <td><c:out value="${article.title}"/></td>
-            <td><c:out value="${article.start}"/> </td>
-        </tr>
-        <tr>
-            <td><c:out value="${article.brief}"/></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <a href="/showArticle/${article.articleId}/show">view</a>
-            </td>
-            <td>
-                <a href="/showArticle/${article.articleId}/edit">edit</a>
-            </td>
-            <td>
-                <form:checkbox path="idDel" value="${article.articleId}"></form:checkbox>
-                <%--<input type="checkbox" name="idDel" value="${article.articleId}">--%>
-            </td>
-
-        </tr>
-        <div style="border-top:1px solid pink;"></div>
+        <div style="border-top:1px solid pink;"/>
     </c:forEach>
-</table>
+    <br>
     <input type="submit" value="delete">
 </form:form>
 

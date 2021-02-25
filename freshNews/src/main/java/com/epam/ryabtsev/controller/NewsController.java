@@ -52,10 +52,12 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
-    public String addArticle(@Valid @ModelAttribute("articleDTO") ArticleDTO articleDTO, BindingResult bindingResult, Model m) {
+    public String addArticle(@ModelAttribute("articleDTO") @Valid ArticleDTO articleDTO, BindingResult bindingResult, Model m) {
         if (bindingResult.hasErrors()) {
             System.out.println("we have problem with valid");
+            System.out.println("test bindingresult: " + bindingResult.getObjectName() + " asd " + bindingResult.getFieldError());
             m.addAttribute("articleDTO", new ArticleDTO());
+            m.addAttribute("errors", bindingResult);
             return "addNews";
         }
         ArticleDAO articleDAO = new ArticleDAOImpl();
