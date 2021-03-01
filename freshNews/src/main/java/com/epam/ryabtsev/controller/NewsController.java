@@ -2,13 +2,14 @@ package com.epam.ryabtsev.controller;
 
 import com.epam.ryabtsev.DTO.ArticleDTO;
 import com.epam.ryabtsev.converter.Converter;
-import com.epam.ryabtsev.dao.ArticleDAO;
-import com.epam.ryabtsev.dao.impl.ArticleDAOImpl;
 import com.epam.ryabtsev.entity.Article;
+import com.epam.ryabtsev.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -20,10 +21,15 @@ public class NewsController {
 
     Converter converter = new Converter();
 
+    @Autowired
+    ArticleRepository articleRepository;
+
+
+
+
     @RequestMapping("/")
     public String newsList(Model model) {
-        ArticleDAO articleDAO = new ArticleDAOImpl();
-        List<Article> articles = articleDAO.getArticles();
+        List<Article> articles = articleRepository.findAll();
 
         model.addAttribute("articleDTO", new ArticleDTO());
         model.addAttribute("listArticle", articles);
@@ -52,23 +58,27 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
-    public String addArticle(@ModelAttribute("articleDTO") @Valid ArticleDTO articleDTO, BindingResult bindingResult, Model m) {
+    public ModelAndView addArticle(@ModelAttribute("articleDTO") @Valid ArticleDTO articleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("we have problem with valid");
             System.out.println("test bindingresult: " + bindingResult.getObjectName() + " asd " + bindingResult.getFieldError());
-            m.addAttribute("articleDTO", new ArticleDTO());
-            m.addAttribute("errors", bindingResult);
-            return "addNews";
+            //m.addAttribute("articleDTO", new ArticleDTO());
+           // m.addAttribute("errors", bindingResult.getModel());
+            return new ModelAndView("addNews", bindingResult.getModel());
         }
-        ArticleDAO articleDAO = new ArticleDAOImpl();
         Article article = converter.convertArticleDTO(articleDTO);
-        articleDAO.saveArticle(article);
+        //articleDAO.saveArticle(article);
+        articleRepository.save(article);
 
-        List<Article> articles = articleDAO.getArticles();
+        List<Article> articles = articleRepository.findAll();
 
-        m.addAttribute("articleDTO", new ArticleDTO());
-        m.addAttribute("listArticle", articles);
-        return "newsList";
+       // m.addAttribute("articleDTO", new ArticleDTO());
+      // m.addAttribute("listArticle", articles);
+        ModelAndView modelAndView = new ModelAndView("newsList");
+        modelAndView.addObject("listArticle", articles);
+        modelAndView.addObject("articleDTO", new ArticleDTO());
+        //return "newsList";
+        return modelAndView;
     }
 
     @PostMapping(value = "/editArticle")
@@ -80,17 +90,15 @@ public class NewsController {
             return "addNews";
         }
 
-        ArticleDAO articleDAO = new ArticleDAOImpl();
-        articleDAO.updateArticle(article);
-        List<Article> articles = articleDAO.getArticles();
+        articleRepository.save(article);
+        List<Article> articles = articleRepository.findAll();
         m.addAttribute("listArticle", articles);
         return "newsList";
     }
 
     @GetMapping(value = "/showArticle/{id}/{action}")
     public String showArticle(@PathVariable String id, @PathVariable String action, Model model) {
-        ArticleDAO articleDAO = new ArticleDAOImpl();
-        ArticleDTO articleDTO = converter.convertEntity(articleDAO.getArticle(Integer.parseInt(id)));
+        ArticleDTO articleDTO = converter.convertEntity(articleRepository.findByArticleId(Integer.parseInt(id)));
 
         model.addAttribute("command", new ArticleDTO());
         model.addAttribute("article", articleDTO);
@@ -103,24 +111,24 @@ public class NewsController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/showArticle/{id}/update")
     public String updateArticle(@ModelAttribute("articleDTO") ArticleDTO articleDTO, Model model) {
         Article article = converter.convertArticleDTO(articleDTO);
-        ArticleDAO articleDAO = new ArticleDAOImpl();
-        articleDAO.updateArticle(article);
-        List<Article> articles = articleDAO.getArticles();
+
+        articleRepository.save(article);
+        List<Article> articles = articleRepository.findAll();
         model.addAttribute("listArticle", articles);
 
-        return "newsList";
+        return "redirect:/";
     }
 
     @PostMapping(value = "/deleteNews")
     public String deleteNews(@ModelAttribute("articleDTO") ArticleDTO articleDTO) {
         System.out.println("TEST delete: " + articleDTO.getIdDel().length);
-        ArticleDAO articleDAO = new ArticleDAOImpl();
-        for (String a : articleDTO.getIdDel()) {
-            System.out.println("test id: " + a);
-            articleDAO.deleteArticle(Integer.parseInt(a));
+
+        for (String id : articleDTO.getIdDel()) {
+            System.out.println("test id: " + id);
+            articleRepository.deleteByArticleId(Integer.parseInt(id));
         }
         return "redirect:/";
     }

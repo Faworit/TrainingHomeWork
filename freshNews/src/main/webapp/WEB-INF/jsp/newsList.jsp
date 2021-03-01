@@ -5,15 +5,22 @@
   Time: 22:11
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<html>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Title</title>
     <link href="/css/body.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<a id="en" href="/?lang=en">English</a>
+<a id="fr" href="/?lang=ru">Russian</a>
+
 <form:form action="deleteNews" method="post" modelAttribute="articleDTO">
 
     <c:forEach var="article" items="${listArticle}">
@@ -37,7 +44,9 @@
         <div style="border-top:1px solid pink;"/>
     </c:forEach>
     <br>
-    <input type="submit" value="delete">
+    <spring:message code="label.button.delete" var="labelSubmit"></spring:message>
+    <input type="submit" value="${labelSubmit}" />
+    <%--<input type="submit" value="delete">--%>
 </form:form>
 
 

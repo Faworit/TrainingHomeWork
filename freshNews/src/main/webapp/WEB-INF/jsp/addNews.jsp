@@ -9,15 +9,15 @@
 <body>
 <form:form method="post" modelAttribute="articleDTO" action="addArticle.html" >
 
-    <div style="display: flex">
+    <%--<div style="display: flex">
         <div style="width: 200px"><form:label path="title">News Title</form:label></div>
         <div ><form:input path="title" maxlength="100"></form:input></div>
-    </div>
-    <%--<p>
+    </div>--%>
+    <p>
         <form:label path="title">News Title</form:label>
         <form:input path="title" maxlength="100"></form:input>
         <form:errors path="title"/>
-    </p>--%>
+    </p>
     <p>
         <form:label path="start">News Date</form:label>
         <form:input path="start"></form:input>

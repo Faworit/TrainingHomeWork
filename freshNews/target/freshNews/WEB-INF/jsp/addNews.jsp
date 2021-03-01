@@ -1,13 +1,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-
 <form:form method="post" modelAttribute="articleDTO" action="addArticle.html" >
+
+    <%--<div style="display: flex">
+        <div style="width: 200px"><form:label path="title">News Title</form:label></div>
+        <div ><form:input path="title" maxlength="100"></form:input></div>
+    </div>--%>
     <p>
         <form:label path="title">News Title</form:label>
         <form:input path="title" maxlength="100"></form:input>
@@ -30,7 +35,7 @@
         <%--<textarea maxlength="2048" name="content" required></textarea>--%>
     </p>
     <p>
-        <input type="submit" value="Add News"/>        
+        <input type="submit" value="Add News"/>
     </p>
 </form:form>
 

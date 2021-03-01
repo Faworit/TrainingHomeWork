@@ -25,8 +25,9 @@ public class AspectLogger {
 
     }
 
-    @Before(value = "@annotation(com.epam.ryabtsev.controller.Monitor)")
+    @Before(value = "@annotation(com.epam.ryabtsev.customAnnotation.Monitor)")
     public void logAnnotation(JoinPoint joinPoint) {
+        System.out.println("TEstm spring annotation");
         log.warn("Start method with custom annotation: class:  " + joinPoint.getSignature().getDeclaringType().getSimpleName()
                 + ", method: " + joinPoint.getSignature().getName());
 
