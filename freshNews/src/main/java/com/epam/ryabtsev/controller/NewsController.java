@@ -5,6 +5,9 @@ import com.epam.ryabtsev.converter.Converter;
 import com.epam.ryabtsev.entity.Article;
 import com.epam.ryabtsev.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,16 +32,42 @@ public class NewsController {
 
     @RequestMapping("/")
     public String newsList(Model model) {
-        List<Article> articles = articleRepository.findAll();
+        //List<Article> articles = articleRepository.findAll();
+        Pageable firstPage = PageRequest.of(0, 2);
+        Page<Article> articles =  articleRepository.findAll(firstPage);
+        System.out.println("number slice: " + articles.getContent());
+        System.out.println("TotalPages: " + articles.getTotalPages());
+        System.out.println("TotalElements: " + articles.getTotalElements());
+        System.out.println("Size: " + articles.getSize());
 
         model.addAttribute("articleDTO", new ArticleDTO());
-        model.addAttribute("listArticle", articles);
+        model.addAttribute("number", articles.getNumber());
+        model.addAttribute("totalPages", articles.getTotalPages());
+        model.addAttribute("totalElements", articles.getTotalElements());
+        model.addAttribute("size", articles.getSize());
+
+        model.addAttribute("listArticle", articles.getContent());
         return "newsList";
     }
 
     @RequestMapping("/home")
     public String home() {
         return "redirect:/";
+    }
+
+    @GetMapping("/pagination")
+    public String pagination(@RequestParam int page, Model model) {
+        System.out.println("TEST in pagination");
+        Pageable firstPage = PageRequest.of(page, 2);
+        Page<Article> articles =  articleRepository.findAll(firstPage);
+        model.addAttribute("articleDTO", new ArticleDTO());
+        model.addAttribute("number", articles.getNumber());
+        model.addAttribute("totalPages", articles.getTotalPages());
+        model.addAttribute("totalElements", articles.getTotalElements());
+        model.addAttribute("size", articles.getSize());
+
+        model.addAttribute("listArticle", articles.getContent());
+        return "newsList";
     }
 
     /*@RequestMapping("/hello")
@@ -74,7 +103,7 @@ public class NewsController {
 
        // m.addAttribute("articleDTO", new ArticleDTO());
       // m.addAttribute("listArticle", articles);
-        ModelAndView modelAndView = new ModelAndView("newsList");
+        ModelAndView modelAndView = new ModelAndView("redirect: /");
         modelAndView.addObject("listArticle", articles);
         modelAndView.addObject("articleDTO", new ArticleDTO());
         //return "newsList";
@@ -93,7 +122,7 @@ public class NewsController {
         articleRepository.save(article);
         List<Article> articles = articleRepository.findAll();
         m.addAttribute("listArticle", articles);
-        return "newsList";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/showArticle/{id}/{action}")
