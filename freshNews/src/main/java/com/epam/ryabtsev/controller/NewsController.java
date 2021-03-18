@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,18 +28,11 @@ public class NewsController {
     @Autowired
     ArticleRepository articleRepository;
 
-
-
-
     @RequestMapping("/")
     public String newsList(Model model) {
         //List<Article> articles = articleRepository.findAll();
         Pageable firstPage = PageRequest.of(0, 2);
         Page<Article> articles =  articleRepository.findAll(firstPage);
-        System.out.println("number slice: " + articles.getContent());
-        System.out.println("TotalPages: " + articles.getTotalPages());
-        System.out.println("TotalElements: " + articles.getTotalElements());
-        System.out.println("Size: " + articles.getSize());
 
         model.addAttribute("articleDTO", new ArticleDTO());
         model.addAttribute("number", articles.getNumber());
@@ -70,13 +64,7 @@ public class NewsController {
         return "newsList";
     }
 
-    /*@RequestMapping("/hello")
-    public String helloWorld(Model m) {
-        String message = "Hello World, Spring MVC @ Javatpoint";
-        m.addAttribute("message", message);
-        return "hello";
-    }*/
-
+   // @PreAuthorize("hasAnyAuthority('ADMIN')")
     @RequestMapping(value = "/add")
     public String add(Model m) {
 
@@ -89,13 +77,10 @@ public class NewsController {
     @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
     public ModelAndView addArticle(@ModelAttribute("articleDTO") @Valid ArticleDTO articleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("we have problem with valid");
-            System.out.println("test bindingresult: " + bindingResult.getObjectName() + " asd " + bindingResult.getFieldError());
-            //m.addAttribute("articleDTO", new ArticleDTO());
-           // m.addAttribute("errors", bindingResult.getModel());
             return new ModelAndView("addNews", bindingResult.getModel());
         }
-        Article article = converter.convertArticleDTO(articleDTO);
+        Article article = Converter.article.convert(articleDTO); //converter.convertArticleDTO(articleDTO);
+
         //articleDAO.saveArticle(article);
         articleRepository.save(article);
 

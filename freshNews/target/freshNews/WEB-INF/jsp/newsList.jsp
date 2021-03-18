@@ -46,8 +46,22 @@
     <br>
     <spring:message code="label.button.delete" var="labelSubmit"></spring:message>
     <input type="submit" value="${labelSubmit}" />
-    <%--<input type="submit" value="delete">--%>
 </form:form>
+<br>
+
+<c:if test="${listArticle.size() > 0 }">
+    <br>
+    <div style="display: flex">
+        <c:forEach begin="0" end="${totalPages-1}" var="page">
+            <div style="display: flex">
+                <form:form action="pagination" method="get">
+                    <input type="text" name="page" value="${page}" hidden>
+                    <input type="submit" value="${page+1}" style="margin-left: 10px">
+                </form:form>
+            </div>
+        </c:forEach>
+    </div>
+</c:if>
 
 
 </body>

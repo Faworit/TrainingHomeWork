@@ -27,6 +27,14 @@
         <put-attribute name="title" value="news list"/>
         <put-attribute name="body" value="/WEB-INF/jsp/newsList.jsp"/>
     </definition>
+    <definition name="login" extends="base.definition">
+        <put-attribute name="login" value="login"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/login.jsp"/>
+    </definition>
+    <definition name="registration" extends="base.definition">
+        <put-attribute name="registration" value="registration"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/registration.jsp"/>
+    </definition>
 
     <definition name="hello" extends="base.definition">
         <put-attribute name="title" value="Hello Spring MVC" />

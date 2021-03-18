@@ -18,7 +18,6 @@ public class ArticleDTO {
     @NotBlank(message = "can't be null")
     @Size(max = 2048)
     private String content;
-
     private String[] idDel;
 
     public ArticleDTO() {
