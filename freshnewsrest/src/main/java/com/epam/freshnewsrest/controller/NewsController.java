@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +28,7 @@ import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
+@Api(description = "Controller for create, update, delete and get Article")
 public class NewsController {
 
     Converter converter = new Converter();
@@ -34,6 +37,7 @@ public class NewsController {
     ArticleRepository articleRepository;
 
     @RequestMapping("/")
+    @ApiOperation("return home page")
     public String newsList() {
         Pageable firstPage = PageRequest.of(0, 2);
         Page<Article> articles =  articleRepository.findAll(firstPage);
