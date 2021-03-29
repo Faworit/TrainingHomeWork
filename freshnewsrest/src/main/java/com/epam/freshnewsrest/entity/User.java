@@ -1,7 +1,9 @@
 package com.epam.freshnewsrest.entity;
 
+/*
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+*/
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -10,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-public class User implements UserDetails {
+public class User /*implements UserDetails*/ {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -60,7 +62,7 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
-    @Override
+   /* @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -78,7 +80,7 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
-    }
+    }*/
 
     public boolean isActive() {
         return active;
@@ -88,10 +90,10 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    @Override
+   /* @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
-    }
+    }*/
 
     public Set<Role> getRoles() {
         return roles;

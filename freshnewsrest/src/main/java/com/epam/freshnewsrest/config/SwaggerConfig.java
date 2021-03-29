@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .groupName("REST API")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.epam.freshnewsrest.controller"))
-                .paths(PathSelectors.ant("/v1/**"))
+                .paths(PathSelectors.ant("/**"))
                 .build();
     }
 }

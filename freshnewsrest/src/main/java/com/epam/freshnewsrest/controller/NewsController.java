@@ -36,7 +36,7 @@ public class NewsController {
     @Autowired
     ArticleRepository articleRepository;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     @ApiOperation("return home page")
     public String newsList() {
         Pageable firstPage = PageRequest.of(0, 2);
@@ -47,6 +47,7 @@ public class NewsController {
     }
 
     @GetMapping("/pagination")
+    @ApiOperation("Pagination, send page number into this method")
     public String pagination(@RequestParam int page) {
         System.out.println("TEST in pagination");
         Pageable firstPage = PageRequest.of(page, 2);
@@ -57,6 +58,7 @@ public class NewsController {
     }
 
     @PostMapping(value = "/addArticle")
+    @ApiOperation("Create new Article")
     public ResponseEntity addArticle(@Valid @RequestBody ArticleDTO articleDTO) {
         Article article = Converter.article.convert(articleDTO);
         articleRepository.save(article);
@@ -65,6 +67,7 @@ public class NewsController {
     }
 
     @GetMapping(value = "/showArticle/{id}")
+    @ApiOperation("return article by incoming id")
     public String showArticle(@PathVariable String id) {
         ArticleDTO articleDTO = converter.convertEntity(articleRepository.findByArticleId(Integer.parseInt(id)));
         String json = new Gson().toJson(articleDTO);
@@ -72,6 +75,7 @@ public class NewsController {
     }
 
     @PostMapping(value = "/deleteNews")
+    @ApiOperation("delete all articles. Incoming String array json")
     public ResponseEntity deleteNews(@RequestBody String delete) throws JsonProcessingException {
         System.out.println("test in list " + delete);
 
