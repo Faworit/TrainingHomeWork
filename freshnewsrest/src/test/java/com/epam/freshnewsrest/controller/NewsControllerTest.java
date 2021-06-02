@@ -8,6 +8,6 @@ public class NewsControllerTest {
 
     @Test
     public void testPagination() {
-
+        System.out.println("test");
     }
 }
