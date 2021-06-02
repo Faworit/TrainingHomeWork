@@ -1,5 +1,8 @@
 package com.epam.freshnewsrest.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -7,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-public class User /*implements UserDetails*/ {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -21,10 +24,10 @@ public class User /*implements UserDetails*/ {
     private String email;
     private boolean active;
 
-    /*@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;*/
+    private Set<Role> roles;
 
     public int getPersonId() {
         return personId;
@@ -57,7 +60,6 @@ public class User /*implements UserDetails*/ {
     public void setEmail(String email) {
         this.email = email;
     }
-/*
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -97,7 +99,7 @@ public class User /*implements UserDetails*/ {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {
