@@ -69,7 +69,7 @@ public class NewsController {
 
     @PostMapping(value = "/deleteNews")
     public ResponseEntity deleteNews(@RequestBody String delete) throws JsonProcessingException {
-
+        System.out.println("test check");
         ObjectMapper mapper = new ObjectMapper();
 
         List<ArticleDTO> dtoList = mapper.readValue(delete, new TypeReference<List<ArticleDTO>>(){});
